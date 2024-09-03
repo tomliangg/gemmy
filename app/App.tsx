@@ -1,3 +1,6 @@
+import { ChatMessageList } from "./ChatMessageList";
+import { chatMessages } from "./constants";
+
 export const App = () => {
-  return <h1>This is app</h1>;
+  return <ChatMessageList contents={chatMessages} />;
 };
