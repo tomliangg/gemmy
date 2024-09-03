@@ -14,14 +14,30 @@
   "contributes": {
     "commands": [
       {
-        "command": "gemini-chat.tada",
-        "title": "tada"
-      },
-      {
-        "command": "gemini-chat.webview",
-        "title": "show webview"
+        "command": "gemini-chat.editorView",
+        "title": "Open gemini-chat in editor"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "gemini-chat-ui-view",
+          "title": "Gemini Chat",
+          "icon": "media/windmill.svg"
+        }
+      ]
+    },
+    "views": {
+      "gemini-chat-ui-view": [
+        {
+          "id": "sidebarApp",
+          "name": "",
+          "icon": "media/windmill.svg",
+          "contextualTitle": "gemini-chat app at sidebar",
+          "type": "webview"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
