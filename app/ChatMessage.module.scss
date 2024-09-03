@@ -1,5 +1,7 @@
+@import "variables";
+
 .chat-message {
-  background-color: #f0f0f0;
+  background-color: var(--bg-secondary-color);
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 16px;
@@ -39,13 +41,11 @@
 }
 
 .message-content code {
-  background-color: #e0e0e0;
   border-radius: 4px;
   font-family: monospace;
 }
 
 .message-content pre {
-  background-color: #e0e0e0;
   border-radius: 4px;
   overflow-x: auto;
 }

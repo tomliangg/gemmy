@@ -1,0 +1,30 @@
+/*  Auto use dark/light theme: https://github.com/highlightjs/highlight.js/issues/3652 */
+@import url("../node_modules/highlight.js/styles/github-dark.css") screen and
+  (prefers-color-scheme: dark);
+@import url("../node_modules/highlight.js/styles/github.css") screen and
+  (prefers-color-scheme: light);
+
+@import "variables";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+
+  color: var(--text-primary-color);
+  background-color: var(--bg-primary-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#root {
+  height: 100%;
+}
+
+button {
+  color: var(--button-text);
+  background-color: var(--button-bg);
+}

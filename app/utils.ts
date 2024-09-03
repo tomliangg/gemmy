@@ -20,3 +20,9 @@ export function retry(
       return retry(fn, retries - 1, err);
     });
 }
+
+// ref: https://stackoverflow.com/questions/56393880/how-do-i-detect-dark-mode-using-javascript
+export const getPreferredScheme = () =>
+  window?.matchMedia?.("(prefers-color-scheme:dark)")?.matches
+    ? "dark"
+    : "light";

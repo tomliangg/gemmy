@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Content,
   GoogleGenerativeAI,
@@ -8,7 +8,7 @@ import { ChatMessageList } from "./ChatMessageList";
 import { generationConfig, safetySettings } from "./constants";
 import { ChatMessageProps } from "./ChatMessage";
 import { ComposeInput } from "./ComposeInput";
-import { retry } from "./utils";
+import { retry, getPreferredScheme } from "./utils";
 import styles from "./App.module.scss";
 
 const genAI = new GoogleGenerativeAI("<API_KEY>");
@@ -18,6 +18,11 @@ interface Part extends ChatMessageProps {
 }
 
 export const App = () => {
+  useEffect(() => {
+    const theme = getPreferredScheme();
+    document.documentElement.setAttribute("data-theme", theme);
+  }, []);
+
   const [parts, setParts] = useState<Part[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

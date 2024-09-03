@@ -1,7 +1,6 @@
 import Bouncer from "./Bouncer";
 import { ChatMessageProps, ChatMessage } from "./ChatMessage";
 import styles from "./ChatMessageList.module.scss";
-import "highlight.js/styles/github.css";
 
 export interface ChatMessageListProps {
   contents: ChatMessageProps[];
