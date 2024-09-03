@@ -9,14 +9,28 @@ import { generationConfig, safetySettings } from "./constants";
 import { ChatMessageProps } from "./ChatMessage";
 import toast from "react-hot-toast";
 
-export interface Part extends ChatMessageProps {
+interface Part extends ChatMessageProps {
   role: (typeof POSSIBLE_ROLES)[number];
 }
 
+interface GeminiConfig {
+  apiKey: string;
+  modelName: string;
+}
+
+const isDev = import.meta.env.DEV;
+
 export const useSetup = () => {
-  const [apiKey, setApiKey] = useState("");
-  const [modelName, setModelName] = useState("gemini-1.5-flash"); // must give it an initial value; otherwise can't initiate a model
-  const genAI = useMemo(() => new GoogleGenerativeAI(apiKey), [apiKey]);
+  const [config, setConfig] = useState<GeminiConfig>({
+    apiKey: isDev ? import.meta.env.VITE_GEMINI_API_KEY : "",
+    modelName: isDev
+      ? import.meta.env.VITE_GEMINI_MODEL_NAME
+      : "gemini-1.5-flash", // must give it an initial value; otherwise can't initiate a model
+  });
+  const genAI = useMemo(
+    () => new GoogleGenerativeAI(config.apiKey),
+    [config.apiKey]
+  );
   const [parts, setParts] = useState<Part[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,8 +41,7 @@ export const useSetup = () => {
 
       switch (msg.data.type) {
         case "initializeConfiguration": {
-          setApiKey(msg.data.value.apiKey as string);
-          setModelName(msg.data.value.modelName as string);
+          setConfig(msg.data.value);
           break;
         }
       }
@@ -41,7 +54,7 @@ export const useSetup = () => {
   }, []);
 
   const model = genAI.getGenerativeModel({
-    model: modelName,
+    model: config.modelName,
     safetySettings,
     generationConfig,
   });
