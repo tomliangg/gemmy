@@ -31,6 +31,11 @@ export const createEditorWebviewPanel = (context: vscode.ExtensionContext) => {
   </html>
   `;
 
+  panel.webview.postMessage({
+    type: "initializeConfiguration",
+    value: vscode.workspace.getConfiguration("geminiChat"),
+  });
+
   panel.iconPath = vscode.Uri.joinPath(
     context.extensionUri,
     "media",

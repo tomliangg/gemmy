@@ -15,13 +15,17 @@ export class SidebarAppViewProvider implements vscode.WebviewViewProvider {
     token: vscode.CancellationToken
   ) {
     this._view = webviewView;
-    console.log("here now");
 
     webviewView.webview.options = {
       enableScripts: true,
     };
 
     this._view.webview.html = this.getWebviewContent();
+
+    this._view.webview.postMessage({
+      type: "initializeConfiguration",
+      value: vscode.workspace.getConfiguration("geminiChat"),
+    });
   }
 
   getWebviewContent() {

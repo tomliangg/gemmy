@@ -1,6 +1,7 @@
 {
   "name": "gemini-chat",
   "displayName": "gemini-chat",
+  "publisher": "tomliangg",
   "description": "chatbot with gemini",
   "version": "0.0.1",
   "engines": {
@@ -37,6 +38,21 @@
           "type": "webview"
         }
       ]
+    },
+    "configuration": {
+      "title": "gemini-chat",
+      "properties": {
+        "geminiChat.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Specify your Gemini API key."
+        },
+        "geminiChat.modelName": {
+          "type": "string",
+          "default": "gemini-1.5-pro",
+          "description": "Specifies which gemini model to use (i.e. gemini-1.0-pro, gemini-1.5-flash)"
+        }
+      }
     }
   },
   "scripts": {
