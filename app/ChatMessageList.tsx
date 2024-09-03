@@ -2,7 +2,7 @@ import { ChatMessageProps, ChatMessage } from "./ChatMessage";
 import styles from "./ChatMessageList.module.scss";
 import "highlight.js/styles/github.css";
 
-interface ChatMessageListProps {
+export interface ChatMessageListProps {
   contents: ChatMessageProps[];
 }
 

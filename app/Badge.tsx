@@ -2,7 +2,7 @@ import { cx } from "@emotion/css";
 import styles from "./Badge.module.scss";
 
 interface BadgeProps {
-  name: "ME" | "AI";
+  name: "me" | "ai";
 }
 
 const Badge = ({ name }: BadgeProps) => {

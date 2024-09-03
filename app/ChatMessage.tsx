@@ -8,7 +8,7 @@ import Badge from "./Badge";
 export interface ChatMessageProps {
   message: string;
   timestamp: Date;
-  sender: "ME" | "AI";
+  sender: "me" | "ai";
 }
 
 export const ChatMessage = ({

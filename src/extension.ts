@@ -29,11 +29,9 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.Uri.joinPath(context.extensionUri, "dist", "bundle.js")
     );
 
-    let cssSrc =
-      "" ??
-      panel.webview.asWebviewUri(
-        vscode.Uri.joinPath(context.extensionUri, "web", "dist", "index.css")
-      );
+    let cssSrc = panel.webview.asWebviewUri(
+      vscode.Uri.joinPath(context.extensionUri, "dist", "assets/index.css")
+    );
 
     panel.webview.html = `<!DOCTYPE html>
     <html lang="en">
