@@ -5,3 +5,8 @@
   justify-content: space-between;
   padding: 16px 16px 0;
 }
+
+// https://github.com/timolins/react-hot-toast/pull/291
+.toast {
+  line-break: anywhere;
+}

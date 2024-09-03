@@ -10,6 +10,7 @@ import { ChatMessageProps } from "./ChatMessage";
 import { ComposeInput } from "./ComposeInput";
 import { retry, getPreferredScheme } from "./utils";
 import styles from "./App.module.scss";
+import toast, { Toaster } from "react-hot-toast";
 
 const genAI = new GoogleGenerativeAI("<API_KEY>");
 
@@ -68,6 +69,7 @@ export const App = () => {
     } catch (err) {
       // remove the last sent messsage from chat
       setParts(updatedParts.slice(0, -1));
+      toast.error(err?.toString() ?? "Something went wrong. Please try again.");
       return false;
     } finally {
       setIsLoading(false);
@@ -76,6 +78,7 @@ export const App = () => {
 
   return (
     <div className={styles.container}>
+      <Toaster toastOptions={{ className: styles.toast }} />
       <ChatMessageList contents={parts} isLoading={isLoading} />
       <ComposeInput onSubmit={handleSubmit} isLoading={isLoading} />
     </div>
