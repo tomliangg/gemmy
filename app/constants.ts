@@ -1,4 +1,30 @@
+import { HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
 import { ChatMessageProps } from "./ChatMessage";
+
+// temperature range is [0, 2.0]; use low temperature for logical problem (maths); use high temperature for creative problem (such as writing)
+export const generationConfig = {
+  temperature: 0.2,
+};
+
+// https://ai.google.dev/gemini-api/docs/safety-settings#node.js
+export const safetySettings = [
+  {
+    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    threshold: HarmBlockThreshold.BLOCK_NONE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+    threshold: HarmBlockThreshold.BLOCK_NONE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    threshold: HarmBlockThreshold.BLOCK_NONE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    threshold: HarmBlockThreshold.BLOCK_NONE,
+  },
+];
 
 export const chatMessages: ChatMessageProps[] = [
   {

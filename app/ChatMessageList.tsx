@@ -1,12 +1,17 @@
+import Bouncer from "./Bouncer";
 import { ChatMessageProps, ChatMessage } from "./ChatMessage";
 import styles from "./ChatMessageList.module.scss";
 import "highlight.js/styles/github.css";
 
 export interface ChatMessageListProps {
   contents: ChatMessageProps[];
+  isLoading: boolean;
 }
 
-export const ChatMessageList = ({ contents }: ChatMessageListProps) => {
+export const ChatMessageList = ({
+  contents,
+  isLoading,
+}: ChatMessageListProps) => {
   return (
     <div className={styles.chatMessageList}>
       {contents.map((content, index) => (
@@ -17,6 +22,7 @@ export const ChatMessageList = ({ contents }: ChatMessageListProps) => {
           sender={content.sender}
         />
       ))}
+      {isLoading && <Bouncer />}
     </div>
   );
 };
