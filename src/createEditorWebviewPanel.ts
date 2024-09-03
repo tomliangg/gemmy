@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 export const createEditorWebviewPanel = (context: vscode.ExtensionContext) => {
   const panel = vscode.window.createWebviewPanel(
     "webview",
-    "gemini-chat",
+    "gemmy",
     vscode.ViewColumn.One,
     {
       enableScripts: true,
@@ -33,7 +33,7 @@ export const createEditorWebviewPanel = (context: vscode.ExtensionContext) => {
 
   panel.webview.postMessage({
     type: "initializeConfiguration",
-    value: vscode.workspace.getConfiguration("geminiChat"),
+    value: vscode.workspace.getConfiguration("gemmy.settings"),
   });
 
   panel.iconPath = vscode.Uri.joinPath(

@@ -1,8 +1,8 @@
 {
-  "name": "gemini-chat",
-  "displayName": "gemini-chat",
+  "name": "gemmy",
+  "displayName": "Gemmy - Gemini Chat Assistant",
   "publisher": "tomliangg",
-  "description": "chatbot with gemini",
+  "description": "Get instant answers directly in VS Code with Gemini AI",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.92.0"
@@ -15,39 +15,39 @@
   "contributes": {
     "commands": [
       {
-        "command": "gemini-chat.editorView",
-        "title": "Open gemini-chat in editor"
+        "command": "gemmy.editorView",
+        "title": "Open Gemmy in editor"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "gemini-chat-ui-view",
-          "title": "Gemini Chat",
+          "id": "gemmy-ui-view",
+          "title": "Gemmy",
           "icon": "media/windmill.svg"
         }
       ]
     },
     "views": {
-      "gemini-chat-ui-view": [
+      "gemmy-ui-view": [
         {
           "id": "sidebarApp",
           "name": "",
           "icon": "media/windmill.svg",
-          "contextualTitle": "gemini-chat app at sidebar",
+          "contextualTitle": "gemmy app at sidebar",
           "type": "webview"
         }
       ]
     },
     "configuration": {
-      "title": "gemini-chat",
+      "title": "gemmy",
       "properties": {
-        "geminiChat.apiKey": {
+        "gemmy.settings.apiKey": {
           "type": "string",
           "default": "",
           "description": "Specify your Gemini API key."
         },
-        "geminiChat.modelName": {
+        "gemmy.settings.modelName": {
           "type": "string",
           "default": "gemini-1.5-pro",
           "description": "Specifies which gemini model to use (i.e. gemini-1.0-pro, gemini-1.5-flash)"

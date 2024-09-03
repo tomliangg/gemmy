@@ -24,7 +24,7 @@ export class SidebarAppViewProvider implements vscode.WebviewViewProvider {
 
     this._view.webview.postMessage({
       type: "initializeConfiguration",
-      value: vscode.workspace.getConfiguration("geminiChat"),
+      value: vscode.workspace.getConfiguration("gemmy.settings"),
     });
   }
 
