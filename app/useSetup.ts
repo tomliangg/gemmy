@@ -4,16 +4,25 @@ import {
   POSSIBLE_ROLES,
 } from "@google/generative-ai";
 import { useEffect, useMemo, useState } from "react";
-import { getPreferredScheme, retry } from "./utils";
+import {
+  getPreferredScheme,
+  retry,
+  setVscodeState,
+  getVscodeState,
+} from "./utils";
 import { generationConfig, safetySettings } from "./constants";
 import { ChatMessageProps } from "./ChatMessage";
 import toast from "react-hot-toast";
+
+const vscodeState = getVscodeState();
+const vscodeConfigApiKey = vscodeState?.apiKey || "";
+const vscodeConfigApiModelName = vscodeState?.modelName || "gemini-1.5-flash"; // must give an initial value to model; otherwise it errors out
 
 interface Part extends ChatMessageProps {
   role: (typeof POSSIBLE_ROLES)[number];
 }
 
-interface GeminiConfig {
+export interface GeminiConfig {
   apiKey: string;
   modelName: string;
 }
@@ -22,10 +31,10 @@ const isDev = import.meta.env.DEV;
 
 export const useSetup = () => {
   const [config, setConfig] = useState<GeminiConfig>({
-    apiKey: isDev ? import.meta.env.VITE_GEMINI_API_KEY : "",
+    apiKey: isDev ? import.meta.env.VITE_GEMINI_API_KEY : vscodeConfigApiKey,
     modelName: isDev
       ? import.meta.env.VITE_GEMINI_MODEL_NAME
-      : "gemini-1.5-flash", // must give it an initial value; otherwise can't initiate a model
+      : vscodeConfigApiModelName,
   });
   const genAI = useMemo(
     () => new GoogleGenerativeAI(config.apiKey),
@@ -35,22 +44,13 @@ export const useSetup = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("message", (e: MessageEvent) => {
-      // Object containing type prop and value prop
-      const msg: MessageEvent = e;
-
-      switch (msg.data.type) {
-        case "initializeConfiguration": {
-          setConfig(msg.data.value);
-          break;
-        }
-      }
-    });
-  }, []);
-
-  useEffect(() => {
     const theme = getPreferredScheme();
     document.documentElement.setAttribute("data-theme", theme);
+
+    window.addEventListener("message", (msg: MessageEvent) => {
+      setVscodeState(msg.data.value);
+      setConfig(msg.data.value);
+    });
   }, []);
 
   const model = genAI.getGenerativeModel({
@@ -106,5 +106,7 @@ export const useSetup = () => {
     parts,
     isLoading,
     handleSubmit,
+    config,
+    setConfig,
   };
 };

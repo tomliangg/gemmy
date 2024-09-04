@@ -14,7 +14,9 @@ export function activate(context: vscode.ExtensionContext) {
   // Sidebar UI when click on the icon at activity bar
   const provider = new SidebarAppViewProvider(context);
   context.subscriptions.push(
-    vscode.window.registerWebviewViewProvider("sidebarApp", provider)
+    vscode.window.registerWebviewViewProvider("sidebarApp", provider, {
+      webviewOptions: { retainContextWhenHidden: true },
+    })
   );
 }
 

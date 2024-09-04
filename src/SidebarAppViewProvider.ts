@@ -20,12 +20,30 @@ export class SidebarAppViewProvider implements vscode.WebviewViewProvider {
       enableScripts: true,
     };
 
-    this._view.webview.html = this.getWebviewContent();
+    this.loadContent();
 
-    this._view.webview.postMessage({
-      type: "initializeConfiguration",
-      value: vscode.workspace.getConfiguration("gemmy.settings"),
+    this._view.webview.onDidReceiveMessage(async (message) => {
+      switch (message.type) {
+        case "setApiKey": {
+          await vscode.workspace
+            .getConfiguration("gemmy.settings")
+            .update("apiKey", message.value, true);
+          this.loadContent();
+          break;
+        }
+      }
     });
+  }
+
+  loadContent() {
+    if (this._view) {
+      this._view.webview.html = this.getWebviewContent();
+
+      this._view.webview.postMessage({
+        type: "initializeConfiguration",
+        value: vscode.workspace.getConfiguration("gemmy.settings"),
+      });
+    }
   }
 
   getWebviewContent() {
