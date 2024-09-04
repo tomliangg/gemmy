@@ -1,6 +1,10 @@
 {
   "name": "gemmy",
   "displayName": "Gemmy - Gemini Chat Assistant",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tomliangg/gemmy.git"
+  },
   "publisher": "tomliangg",
   "description": "Get instant answers directly in VS Code with Gemini AI",
   "version": "0.0.1",

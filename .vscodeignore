@@ -15,4 +15,4 @@ tsconfig.node.json
 vite.config.mts
 .env.*
 index.html
-# node_modules
+node_modules
