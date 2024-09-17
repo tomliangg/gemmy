@@ -58,6 +58,6 @@ export const createEditorWebviewPanel = (context: vscode.ExtensionContext) => {
   panel.iconPath = vscode.Uri.joinPath(
     context.extensionUri,
     "media",
-    "windmill.svg"
+    "panel_view_icon.svg"
   );
 };

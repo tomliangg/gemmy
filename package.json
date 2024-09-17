@@ -1,13 +1,14 @@
 {
   "name": "gemmy",
   "displayName": "Gemmy - Gemini Chat Assistant",
+  "icon": "media/logo.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/tomliangg/gemmy.git"
   },
   "publisher": "tomliangg",
   "description": "Get instant answers directly in VS Code with Gemini AI",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.92.0"
   },
@@ -28,7 +29,7 @@
         {
           "id": "gemmy-ui-view",
           "title": "Gemmy",
-          "icon": "media/windmill.svg"
+          "icon": "media/side_bar_icon.svg"
         }
       ]
     },
@@ -37,7 +38,7 @@
         {
           "id": "sidebarApp",
           "name": "",
-          "icon": "media/windmill.svg",
+          "icon": "media/side_bar_icon.svg",
           "contextualTitle": "gemmy app at sidebar",
           "type": "webview"
         }
