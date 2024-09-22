@@ -43,7 +43,7 @@ export const getVscode = () => {
 
 export const getVscodeState = () => {
   const vscode = getVscode();
-  return vscode.getState();
+  return vscode?.getState();
 };
 
 export const setVscodeState = (newState: Object) => {
