@@ -8,7 +8,7 @@ import { SetupForm } from "./SetupForm";
 const isProd = import.meta.env.PROD;
 
 export const App = () => {
-  const { isLoading, handleSubmit, parts, config, setConfig, streamingMessage } = useSetup();
+  const { isLoading, handleSubmit, parts, config, setConfig, streamingMessage, setParts } = useSetup();
 
   if (isProd && !config.apiKey) {
     // in prod where it has vs code extension context, check whether API key is set.
@@ -20,7 +20,7 @@ export const App = () => {
     <div className={styles.container}>
       <Toaster toastOptions={{ className: styles.toast }} />
       <ChatMessageList contents={parts} streamingMessage={streamingMessage} />
-      <ComposeInput onSubmit={handleSubmit} isLoading={isLoading} />
+      <ComposeInput onSubmit={handleSubmit} isLoading={isLoading} parts={parts} setParts={setParts}  />
     </div>
   );
 };

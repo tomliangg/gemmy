@@ -17,7 +17,7 @@ const vscodeState = getVscodeState();
 const vscodeConfigApiKey = vscodeState?.apiKey || "";
 const vscodeConfigApiModelName = vscodeState?.modelName || "gemini-1.5-flash"; // must give an initial value to model; otherwise it errors out
 
-interface Part extends ChatMessageProps {
+export interface Part extends ChatMessageProps {
   role: (typeof POSSIBLE_ROLES)[number];
 }
 
@@ -114,6 +114,7 @@ export const useSetup = () => {
 
   return {
     parts,
+    setParts,
     isLoading,
     handleSubmit,
     config,

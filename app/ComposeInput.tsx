@@ -1,13 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader } from "lucide-react";
+import { Send, Loader, Trash2 } from "lucide-react";
 import styles from "./ComposeInput.module.scss";
+import { Part } from "./useSetup";
 
 interface ComposeInputProps {
   onSubmit: (query: string) => Promise<boolean>;
   isLoading: boolean;
+  parts: Part[];
+  setParts: (udpatedParts: Part[]) => void;
 }
 
-export const ComposeInput = ({ onSubmit, isLoading }: ComposeInputProps) => {
+export const ComposeInput = ({ onSubmit, isLoading, parts, setParts }: ComposeInputProps) => {
   const [query, setQuery] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -76,6 +79,16 @@ export const ComposeInput = ({ onSubmit, isLoading }: ComposeInputProps) => {
           >
             {isLoading ? <Loader size={16} /> : <Send size={16} />}
           </button>
+          {!isLoading && parts.length && !query ? <button
+            type="button"
+            className={`${styles.button} ${styles.clearButton}`}
+            title="Clear all messages"
+            onClick={() => {
+              setParts([]);
+            }}
+          >
+            <Trash2 size={16} />
+          </button> : null}
         </div>
       </form>
     </div>
