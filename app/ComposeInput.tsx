@@ -64,6 +64,7 @@ export const ComposeInput = ({ onSubmit, isLoading }: ComposeInputProps) => {
               isLoading ? "Generating a response..." : "Type your message..."
             }
             className={styles.input}
+            disabled={isLoading}
           />
         </div>
         <div className={styles.buttonsContainer}>

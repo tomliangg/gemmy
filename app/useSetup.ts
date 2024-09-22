@@ -6,7 +6,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import {
   getPreferredScheme,
-  retry,
   setVscodeState,
   getVscodeState,
 } from "./utils";
@@ -41,6 +40,7 @@ export const useSetup = () => {
     [config.apiKey]
   );
   const [parts, setParts] = useState<Part[]>([]);
+  const [streamingMessage, setStreamingMessage] = useState<string | undefined>("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -78,14 +78,24 @@ export const useSetup = () => {
 
     try {
       setIsLoading(true);
-      const modelOutputText = await retry(() =>
-        model.generateContent({ contents: payloadContents })
-      );
+      const result = await model.generateContentStream({ contents: payloadContents });
+      let responseText = '';
+      setStreamingMessage(responseText);
+
+      for await (const chunk of result.stream) {
+        const chunkText = chunk.text();
+        responseText += chunkText;
+        setStreamingMessage(responseText);
+      }
+
+      // reset streaming message since it's completely loaded; add that message into list.
+      setStreamingMessage(undefined);
+
       updatedParts = [
         ...updatedParts,
         {
           role: "model",
-          message: modelOutputText,
+          message: responseText,
           timestamp: new Date(),
           sender: "ai",
         },
@@ -108,5 +118,6 @@ export const useSetup = () => {
     handleSubmit,
     config,
     setConfig,
+    streamingMessage,
   };
 };

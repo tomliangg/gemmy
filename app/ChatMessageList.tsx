@@ -1,15 +1,14 @@
-import Bouncer from "./Bouncer";
 import { ChatMessageProps, ChatMessage } from "./ChatMessage";
 import styles from "./ChatMessageList.module.scss";
 
 export interface ChatMessageListProps {
   contents: ChatMessageProps[];
-  isLoading: boolean;
+  streamingMessage?: string;
 }
 
 export const ChatMessageList = ({
   contents,
-  isLoading,
+  streamingMessage,
 }: ChatMessageListProps) => {
   return (
     <div className={styles.chatMessageList}>
@@ -19,9 +18,10 @@ export const ChatMessageList = ({
           message={content.message}
           timestamp={content.timestamp}
           sender={content.sender}
+          isLoading={false}
         />
       ))}
-      {isLoading && <Bouncer />}
+      {streamingMessage ? <ChatMessage message={streamingMessage} sender="ai" timestamp={new Date()} isLoading={true} /> : null}
     </div>
   );
 };
