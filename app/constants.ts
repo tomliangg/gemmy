@@ -1,5 +1,4 @@
 import { HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-import { ChatMessageProps } from "./ChatMessage";
 
 // temperature range is [0, 2.0]; use low temperature for logical problem (maths); use high temperature for creative problem (such as writing)
 export const generationConfig = {
@@ -26,7 +25,15 @@ export const safetySettings = [
   },
 ];
 
-export const chatMessages: ChatMessageProps[] = [
+interface ChatMessageTyp {
+  message: string;
+  timestamp: Date;
+  sender: "me" | "ai";
+  isLoading?: boolean;
+}
+
+// use for testing
+export const chatMessages: ChatMessageTyp[] = [
   {
     message: "Hello, how are you?",
     timestamp: new Date("2023-05-01T10:30:00Z"),
@@ -97,20 +104,22 @@ export const chatMessages: ChatMessageProps[] = [
     sender: "me",
   },
   {
+    isLoading: true,
     message: `
-| Feature    | Support              |
-| ---------: | :------------------- |
-| CommonMark | 100%                 |
-| GFM        | 100% w/              |
+  # This is a header
 
+This is a paragraph.
 
-~~strikethrough~~
+* This is a list
+* With two items
+  1. And a sublist
+  2. That is ordered
+    * With another
+    * Sublist inside
 
-* [ ] task list
-* [x] checked item
-
-https://example.com
-    `,
+| And this is | A table |
+|-------------|---------|
+| With two    | columns |`,
     timestamp: new Date("2023-05-02T18:59:00Z"),
     sender: "ai",
   },

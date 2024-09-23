@@ -1,27 +1,24 @@
-import { GenerateContentResult } from "@google/generative-ai";
-import { vscode as vscodeType } from "./global";
+import type { vscode as vscodeType } from "./global";
 
 let vscode: vscodeType;
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 // modified from: https://stackoverflow.com/a/51332115
 export function retry(
-  fn: () => Promise<GenerateContentResult>,
+  fn: () => Promise<any>,
   retries = 3,
   err?: Error
-): Promise<string> {
+): Promise<any> {
   if (retries < 0) {
-    return Promise.reject(err);
+    throw err;
   }
-  return fn()
-    .then((result) => {
-      // for genAI.getGenerativeModel() api call, we can't tell if it gets "RECITATION" error until we parse the text
-      return result.response.text();
-    })
-    .catch((err) => {
-      console.warn("failed! Remaining retries:", retries);
-      console.error("Error is:", err);
-      return retry(fn, retries - 1, err);
-    });
+  return fn().catch(async (err) => {
+    console.warn("failed! Remaining retries:", retries);
+    console.error(err);
+    await sleep(300);
+    return retry(fn, retries - 1, err);
+  });
 }
 
 // ref: https://stackoverflow.com/questions/56393880/how-do-i-detect-dark-mode-using-javascript
@@ -48,5 +45,5 @@ export const getVscodeState = () => {
 
 export const setVscodeState = (newState: Object) => {
   const previousState = getVscodeState();
-  vscode.setState({ ...previousState, ...newState });
+  vscode?.setState({ ...previousState, ...newState });
 };

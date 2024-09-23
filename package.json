@@ -8,7 +8,7 @@
   },
   "publisher": "tomliangg",
   "description": "Get instant answers directly in VS Code with Gemini AI",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.92.0"
   },
@@ -63,40 +63,39 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b --noEmit && vite build",
     "build:watch": "tsc -b && vite build --watch",
     "compile": "tsc -p tsconfig.vsc-extension.json",
     "watch": "tsc -watch -p tsconfig.vsc-extension.json",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "test": "vscode-test",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json --noEmit"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.7",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@tsconfig/svelte": "^5.0.4",
     "@types/node": "20.x",
+    "@types/prismjs": "^1.26.4",
     "@types/vscode": "^1.92.0",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.11.0",
-    "@vitejs/plugin-react": "^4.3.1",
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.4.0",
     "eslint": "^8.57.0",
     "sass-embedded": "^1.77.8",
-    "typescript": "^5.4.5",
+    "svelte": "^4.2.19",
+    "svelte-check": "^4.0.2",
+    "typescript": "^5.6.2",
     "vite": "^5.4.2"
   },
   "dependencies": {
     "@emotion/css": "^11.13.0",
     "@google/generative-ai": "^0.17.1",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
-    "highlight.js": "^11.10.0",
-    "lucide-react": "^0.437.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-hot-toast": "^2.4.1",
-    "react-markdown": "^9.0.1",
-    "rehype-highlight": "^7.0.0",
-    "remark-gfm": "^4.0.0"
+    "lucide-svelte": "^0.445.0",
+    "marked": "^14.1.2",
+    "marked-highlight": "^2.1.4",
+    "prismjs": "^1.29.0",
+    "svelte-french-toast": "^1.2.0"
   }
 }
