@@ -39,6 +39,11 @@ This VS Code extension allows users to chat with Google's Gemini AI models direc
 6. View the AI's response in the chat window
 7. Continue the conversation by sending more messages
 
+## Demo
+
+- [Setup and use gemmy in side bar](https://www.youtube.com/watch?v=QVgVOAjwvsE)
+- [Use gemmy in editor](https://www.youtube.com/watch?v=yC_lQdxXG5E)
+
 ## Support
 
 If you encounter any issues or have questions, please file an issue on our GitHub repository.
