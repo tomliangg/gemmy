@@ -2,7 +2,7 @@
   import { Send, Loader, Trash2 } from "lucide-svelte";
   import type { POSSIBLE_ROLES } from "@google/generative-ai";
   import { cx } from "@emotion/css";
-  import type { ComponentProps } from "svelte";
+  import { afterUpdate, type ComponentProps } from "svelte";
   import ChatMessage from "./ChatMessage.svelte";
   import styles from "./ComposeInput.module.scss";
 
@@ -17,9 +17,9 @@
   let query = "";
   let textarea: HTMLTextAreaElement;
 
-  $: if (textarea) {
+  afterUpdate(() => {
     adjustTextareaHeight();
-  }
+  });
 
   function adjustTextareaHeight() {
     textarea.style.height = "auto";
