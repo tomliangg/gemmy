@@ -28,7 +28,13 @@
   $: parsedMessage = marked.parse(message);
 </script>
 
-<div class={cx(styles.chatMessage, styles[`message-from-${sender}`])}>
+<div
+  class={cx(
+    styles.chatMessage,
+    styles[`message-from-${sender}`],
+    "chat-message"
+  )}
+>
   <div class={styles.messageHeader}>
     <div class={styles.badgeContainer}>
       <Badge name={sender} />

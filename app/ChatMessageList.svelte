@@ -1,12 +1,23 @@
 <script lang="ts">
-  import type { ComponentProps } from "svelte";
+  import { afterUpdate, type ComponentProps } from "svelte";
   import ChatMessage from "./ChatMessage.svelte";
 
   export let contents: ComponentProps<ChatMessage>[];
   export let streamingMessage: string | undefined;
+  let messageList: HTMLDivElement;
+
+  afterUpdate(() => {
+    // automatically scroll to the last User message and AI message
+    if (contents.length && !streamingMessage) {
+      const lastMessage = messageList.querySelector(
+        ".chat-message:last-of-type"
+      ) as HTMLDivElement;
+      lastMessage.scrollIntoView(true);
+    }
+  });
 </script>
 
-<div class="chatMessageList">
+<div class="chatMessageList" bind:this={messageList}>
   {#each contents as content}
     <ChatMessage
       message={content.message}
