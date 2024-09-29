@@ -22,12 +22,7 @@
   });
 
   function adjustTextareaHeight() {
-    textarea.style.height = "auto";
     textarea.style.height = `${Math.min(textarea.scrollHeight, 600)}px`;
-  }
-
-  function handleInputChange(e: Event) {
-    query = (e.target as HTMLTextAreaElement).value;
   }
 
   async function submitHandler() {
@@ -67,7 +62,6 @@
       <textarea
         bind:this={textarea}
         bind:value={query}
-        on:input={handleInputChange}
         on:keydown={handleKeyDown}
         placeholder={isLoading
           ? "Generating a response..."

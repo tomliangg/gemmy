@@ -40,7 +40,7 @@
       ? import.meta.env.VITE_GEMINI_MODEL_NAME
       : vscodeConfigApiModelName,
   };
-  let streamingMessage: string | undefined;
+  let streamingMessage = "";
   let isLoading = false;
 
   $: genAI = new GoogleGenerativeAI(config.apiKey);
@@ -60,26 +60,13 @@
     });
   });
 
-  const handleSubmit = async (query: string) => {
-    let updatedParts: Part[] = [
-      ...parts,
-      {
-        role: "user",
-        message: query,
-        timestamp: new Date(),
-        sender: "me",
-      },
-    ];
-
-    parts = updatedParts;
-    const payloadContents: Content[] = updatedParts.map((part) => ({
+    const generateContent = async () => {
+      const payloadContents: Content[] = parts.map((part) => ({
       role: part.role,
       parts: [{ text: part.message }],
     }));
 
-    const generateContent = async () => {
       isLoading = true;
-      streamingMessage = "";
 
       const result = await model.generateContentStream({
         contents: payloadContents,
@@ -99,8 +86,9 @@
         throw new Error("No content received from the stream");
       }
 
-      updatedParts = [
-        ...updatedParts,
+      // add that message into list
+      parts = [
+        ...parts,
         {
           role: "model",
           message: streamingMessage,
@@ -108,11 +96,22 @@
           sender: "ai",
         },
       ];
-      parts = updatedParts;
-      return Promise.resolve("done");
+      return Promise.resolve("Model generation is complete!");
     };
 
+  const handleSubmit = async (query: string) => {
+    parts = [
+      ...parts,
+      {
+        role: "user",
+        message: query,
+        timestamp: new Date(),
+        sender: "me",
+      },
+    ];
+
     let isSuccessful = false;
+
     try {
       // often, gemini stream contains no message (bugs on their end); therefore, retry
       await retry(generateContent);
@@ -123,12 +122,12 @@
       console.error(errorMessage);
       toast.error(errorMessage);
       // remove the last sent messsage from chat
-      parts = updatedParts.slice(0, -1);
+      parts = parts.slice(0, -1);
       isSuccessful = false;
     } finally {
       isLoading = false;
-      // reset streaming message since it's completely loaded; add that message into list.
-      streamingMessage = undefined;
+      // reset streaming message since it's completely loaded
+      streamingMessage = "";
       return isSuccessful;
     }
   };
@@ -138,7 +137,7 @@
   <SetupForm bind:config />
 {:else}
   <div class="container">
-    <ChatMessageList contents={parts} {streamingMessage} />
+    <ChatMessageList isStreaming={isLoading} contents={parts} {streamingMessage} />
     <ComposeInput onSubmit={handleSubmit} {isLoading} bind:parts />
     <Toaster
       toastOptions={{

@@ -8,7 +8,7 @@
   },
   "publisher": "tomliangg",
   "description": "Get instant answers directly in VS Code with Gemini AI",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "engines": {
     "vscode": "^1.92.0"
   },

@@ -3,12 +3,13 @@
   import ChatMessage from "./ChatMessage.svelte";
 
   export let contents: ComponentProps<ChatMessage>[];
-  export let streamingMessage: string | undefined;
+  export let streamingMessage: string;
+  export let isStreaming: boolean;
   let messageList: HTMLDivElement;
 
   afterUpdate(() => {
     // automatically scroll to the last User message and AI message
-    if (contents.length && !streamingMessage) {
+    if (contents.length) {
       const lastMessage = messageList.querySelector(
         ".chat-message:last-of-type"
       ) as HTMLDivElement;
@@ -27,7 +28,7 @@
     />
   {/each}
 
-  {#if streamingMessage !== undefined}
+  {#if isStreaming}
     <ChatMessage
       message={streamingMessage}
       sender="ai"
