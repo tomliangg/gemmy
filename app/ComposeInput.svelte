@@ -22,6 +22,7 @@
   });
 
   function adjustTextareaHeight() {
+    textarea.style.height = 'auto';
     textarea.style.height = `${Math.min(textarea.scrollHeight, 600)}px`;
   }
 
