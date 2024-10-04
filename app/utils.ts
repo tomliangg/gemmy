@@ -47,3 +47,11 @@ export const setVscodeState = (newState: Object) => {
   const previousState = getVscodeState();
   vscode?.setState({ ...previousState, ...newState });
 };
+
+export const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
+  let binary = '';
+  for (const byte of new Uint8Array(buffer)) {
+    binary += String.fromCharCode(byte);
+  }
+  return window.btoa(binary);
+}

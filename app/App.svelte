@@ -1,25 +1,28 @@
 <script lang="ts">
   import { onMount, type ComponentProps } from "svelte";
   import toast, { Toaster } from "svelte-french-toast";
+  import {
+    GoogleGenerativeAI,
+    type Content,
+    type POSSIBLE_ROLES,
+  } from "@google/generative-ai";
+  import type { Part as GeminiPart } from "@google/generative-ai/server";
   import ComposeInput from "./ComposeInput.svelte";
   import {
     getPreferredScheme,
     getVscodeState,
     retry,
     setVscodeState,
+    arrayBufferToBase64,
   } from "./utils";
   import ChatMessageList from "./ChatMessageList.svelte";
   import { generationConfig, safetySettings } from "./constants";
-  import {
-    GoogleGenerativeAI,
-    type Content,
-    type POSSIBLE_ROLES,
-  } from "@google/generative-ai";
   import ChatMessage from "./ChatMessage.svelte";
   import SetupForm from "./SetupForm.svelte";
 
   interface Part extends ComponentProps<ChatMessage> {
     role: (typeof POSSIBLE_ROLES)[number];
+    files?: File[];
   }
 
   interface GeminiConfig {
@@ -60,46 +63,66 @@
     });
   });
 
-    const generateContent = async () => {
-      const payloadContents: Content[] = parts.map((part) => ({
-      role: part.role,
-      parts: [{ text: part.message }],
-    }));
+  // https://ai.google.dev/api/caching#Content
+  const generateContent = async () => {
+    isLoading = true;
 
-      isLoading = true;
-
-      const result = await model.generateContentStream({
-        contents: payloadContents,
-      });
-
-      let hasMessage = false;
-
-      for await (const chunk of result.stream) {
-        if (Boolean(chunk?.text())) {
-          const chunkText = chunk.text();
-          streamingMessage += chunkText;
-          hasMessage = true;
+    const contentParts: Content[] = [];
+    for (const part of parts) {
+      const contentPart: GeminiPart[] = [{ text: part.message }];
+      if (part.files) {
+        for (const file of part.files) {
+          const fileArrayBuffer = await file.arrayBuffer();
+          contentPart.push(
+            {
+              text: `The following part has inline data. The attachment is known as ${file.name}`,
+            },
+            {
+              inlineData: {
+                mimeType: file.type,
+                data: arrayBufferToBase64(fileArrayBuffer),
+              },
+            },
+          );
         }
       }
+      contentParts.push({
+        role: part.role,
+        parts: contentPart,
+      });
+    }
+    const result = await model.generateContentStream({
+      contents: contentParts,
+    });
 
-      if (!hasMessage) {
-        throw new Error("No content received from the stream");
+    let hasMessage = false;
+
+    for await (const chunk of result.stream) {
+      if (Boolean(chunk?.text())) {
+        const chunkText = chunk.text();
+        streamingMessage += chunkText;
+        hasMessage = true;
       }
+    }
 
-      // add that message into list
-      parts = [
-        ...parts,
-        {
-          role: "model",
-          message: streamingMessage,
-          timestamp: new Date(),
-          sender: "ai",
-        },
-      ];
-      return Promise.resolve("Model generation is complete!");
-    };
+    if (!hasMessage) {
+      throw new Error("No content received from the stream");
+    }
 
-  const handleSubmit = async (query: string) => {
+    // add that message into list
+    parts = [
+      ...parts,
+      {
+        role: "model",
+        message: streamingMessage,
+        timestamp: new Date(),
+        sender: "ai",
+      },
+    ];
+    return Promise.resolve("Model generation is complete!");
+  };
+
+  const handleSubmit = async (query: string, files: File[]) => {
     parts = [
       ...parts,
       {
@@ -107,6 +130,7 @@
         message: query,
         timestamp: new Date(),
         sender: "me",
+        files,
       },
     ];
 
@@ -137,7 +161,11 @@
   <SetupForm bind:config />
 {:else}
   <div class="container">
-    <ChatMessageList isStreaming={isLoading} contents={parts} {streamingMessage} />
+    <ChatMessageList
+      isStreaming={isLoading}
+      contents={parts}
+      {streamingMessage}
+    />
     <ComposeInput onSubmit={handleSubmit} {isLoading} bind:parts />
     <Toaster
       toastOptions={{

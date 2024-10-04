@@ -43,7 +43,7 @@
     transition: background-color 0.2s;
     border: none;
     background-color: #3b82f6;
-    color: #ffffff;
+    color: var(--text-primary-color);
 
     &:hover {
       background-color: #2563eb;

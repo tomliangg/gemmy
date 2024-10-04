@@ -25,6 +25,7 @@
       timestamp={content.timestamp}
       sender={content.sender}
       isLoading={content.isLoading}
+      files={content.files}
     />
   {/each}
 
