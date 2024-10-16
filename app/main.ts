@@ -14,6 +14,7 @@ import "prismjs/components/prism-cpp";
 import "prismjs/components/prism-csharp";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-python";
+import "prismjs/components/prism-swift";
 
 const app = new App({
   target: document.getElementById("root")!,

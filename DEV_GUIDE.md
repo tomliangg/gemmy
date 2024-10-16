@@ -24,3 +24,11 @@ npm run build
 
 # open extension.ts file, then press F5; alternatively, open the debug tool and click the run button.
 ```
+
+## Publish extension
+
+```sh
+npm run build
+vsce package
+vsce publish
+```
