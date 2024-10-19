@@ -29,6 +29,8 @@ npm run build
 
 ```sh
 npm run build
+# only needed for first time
+# vsce login <publisher id>
 vsce package
-vsce publish
+vsce publish -p <personal_access_token>
 ```

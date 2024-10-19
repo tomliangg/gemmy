@@ -2,7 +2,7 @@
   import { Send, Loader, Trash2, Upload, Info } from "lucide-svelte";
   import type { POSSIBLE_ROLES } from "@google/generative-ai";
   import { cx } from "@emotion/css";
-  import { afterUpdate, type ComponentProps } from "svelte";
+  import { onMount, onDestroy, afterUpdate, type ComponentProps } from "svelte";
   import ChatMessage from "./ChatMessage.svelte";
   import styles from "./ComposeInput.module.scss";
   import Pill from "./Pill.svelte";
@@ -23,6 +23,14 @@
 
   let textarea: HTMLTextAreaElement;
   let fileInput: HTMLInputElement;
+
+  onMount(() => {
+    window.addEventListener("resize", adjustTextareaHeight);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener("resize", adjustTextareaHeight);
+  });
 
   afterUpdate(() => {
     adjustTextareaHeight();
@@ -59,8 +67,7 @@
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      submitHandler();
+      handleSubmit(e);
     }
   }
 
@@ -88,7 +95,13 @@
           />
         {/each}
       </div>
-      <div class={styles.infoText}><Info size={14} /><i>&nbsp;Files are processed directly on your device as inline data and not saved to any storage. Please ensure file names are unique. Note that some file formats may be incompatible with Gemini.</i></div>
+      <div class={styles.infoText}>
+        <Info size={14} /><i
+          >&nbsp;Files are processed directly on your device as inline data and
+          not saved to any storage. Please ensure file names are unique. Note
+          that some file formats may be incompatible with Gemini.</i
+        >
+      </div>
     </div>
   {/if}
   <form on:submit={handleSubmit} class={styles.form}>
