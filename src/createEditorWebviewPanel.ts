@@ -38,6 +38,7 @@ export const createEditorWebviewPanel = (context: vscode.ExtensionContext) => {
     vscode.ViewColumn.One,
     {
       enableScripts: true,
+      retainContextWhenHidden: true
     }
   );
 
